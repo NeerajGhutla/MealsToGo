@@ -14,10 +14,11 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 
 import { RestaurantsContextProvider } from "./src/services/restaurants/restaurants.context";
-import { RestaurantsScreen } from "./src/features/restaurants/screens/restaurants.screen";
 import { LocationContextProvider } from "./src/services/location/location.context";
+import { FavouritesContextProvider } from "./src/services/favourites/favourites.context";
 import { SafeArea } from "./src/utility/safe-area.components";
 import { theme } from "./src/infrastructure/theme";
+import { Navigation } from "./src/infrastructure/navigation";
 
 const TAB_ICON = {
   Restaurants: "md-restaurant",
@@ -68,23 +69,13 @@ export default function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <LocationContextProvider>
-          <RestaurantsContextProvider>
-            <NavigationContainer>
-              <Tab.Navigator
-                screenOptions={createScreenOptions}
-                tabBarOptions={{
-                  activeTintColor: "green",
-                  inactiveTintColor: "gray",
-                }}
-              >
-                <Tab.Screen name="Restaurants" component={RestaurantsScreen} />
-                <Tab.Screen name="Map" component={Map} />
-                <Tab.Screen name="Settings" component={Settings} />
-              </Tab.Navigator>
-            </NavigationContainer>
-          </RestaurantsContextProvider>
-        </LocationContextProvider>
+        <FavouritesContextProvider>
+          <LocationContextProvider>
+            <RestaurantsContextProvider>
+              <Navigation />
+            </RestaurantsContextProvider>
+          </LocationContextProvider>
+        </FavouritesContextProvider>
       </ThemeProvider>
       <ExpoStatusBar style="auto" />
     </>
